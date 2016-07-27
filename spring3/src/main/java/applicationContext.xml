@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	  xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/aop
+
+     http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+ <context:component-scan base-package="com.kaishengit.aop"></context:component-scan>
+		<bean name="Mysql" class="com.kaishengit.spring.dao.spring3.UserDaoMysql"></bean>  
+		<bean name="Oracle" class="com.kaishengit.spring.dao.spring3.UserDaoOracle"></bean>
+        <bean name="UserService" class="com.kaishengit.spring.dao.spring3.UserService">
+        	<property name="userDao" >
+        		<ref bean="Oracle"/>
+        	</property>
+        	<property name="name" value="zhangsan"></property>
+        	<property name="age" value="23"></property>
+        	<property name="strList">
+        		<list>
+        			<value>v1</value>
+        			<value>v2</value>
+        		</list>
+        	</property>
+        
+           	<property name="setSet">
+        		<set>
+        			<value>xx</value>
+        			<value>yy</value>       			
+        		</set>
+          	</property>
+      
+        </bean>
+       <context:property-placeholder location="jdbc.properties"/> 
+        <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        	<property name="url" value="${jdbc.url}"/>
+        	<property name="driverClassName" value="${jdbc.driver}"/>
+        	<property name="username" value="${jdbc.username}"/>
+        	<property name="password" value="${jdbc.password}"/>
+        </bean>
+        <bean id="JdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        	<constructor-arg name="dataSource" ref="dataSource"/>
+        </bean>
+<!-- 
+	<context:component-scan base-package="com.kaishengit"></context:component-scan>
+ 
+	<bean name="MyAdvice" class="com.kaishengit.aop"/>
+	<aop:config>
+		
+		<aop:aspect ref="MyAdvice">
+			<aop:pointcut expression="execution(*com.kaishengit.dao..*.*(..))" id="myPointcut"/>
+			<aop:before method="beforeAdvice" pointcut-ref="myPointcut"/>
+			<aop:after-returning method="afterReturningAdvice" pointcut-ref="myPointcut" returning="result"/>
+			<aop:after-throwing method="afterThrowingAdvice" pointcut-ref="myPointcut"/>
+		</aop:aspect>
+	</aop:config>
+		
+
+	<bean name="Service" class="com.kaishengit.spring.dao.spring3.UserService" autowire="byType">
+ 	<constructor-arg name="userDao" ref="Mysql"/>  -->		
+	
+</beans> 
