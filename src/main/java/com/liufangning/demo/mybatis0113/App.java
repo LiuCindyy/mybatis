@@ -1,7 +1,7 @@
 package com.liufangning.demo.mybatis0113;
 
 /**
- * Hello world!
+ * world!
  *
  */
 public class App 
